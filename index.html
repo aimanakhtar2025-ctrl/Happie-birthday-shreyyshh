@@ -1,1 +1,1061 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>For Shryss ❤️</title>
 
+<style>
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  font-family: Arial, sans-serif;
+  background: linear-gradient(135deg, #18000d, #4b001d, #8b0038);
+  color: white;
+  min-height: 100vh;
+  overflow-x: hidden;
+  text-align: center;
+}
+
+.page {
+  display: none;
+  min-height: 100vh;
+  padding: 35px 20px;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+}
+
+.page.active {
+  display: flex;
+}
+
+.card {
+  width: 100%;
+  max-width: 650px;
+  background: rgba(255,255,255,0.10);
+  border: 1px solid rgba(255,255,255,0.2);
+  backdrop-filter: blur(12px);
+  border-radius: 25px;
+  padding: 30px 20px;
+  box-shadow: 0 10px 40px rgba(0,0,0,0.35);
+}
+
+h1 {
+  font-size: 2.5rem;
+  margin-bottom: 18px;
+}
+
+h2 {
+  margin-bottom: 15px;
+}
+
+p {
+  line-height: 1.7;
+  margin-bottom: 18px;
+}
+
+button {
+  border: none;
+  padding: 13px 22px;
+  border-radius: 30px;
+  background: #ff3f81;
+  color: white;
+  font-size: 16px;
+  cursor: pointer;
+  margin: 8px;
+  transition: 0.25s;
+  box-shadow: 0 5px 20px rgba(255, 63, 129, 0.3);
+}
+
+button:hover {
+  transform: scale(1.05);
+  background: #ff6298;
+}
+
+.music-btn {
+  position: fixed;
+  top: 15px;
+  right: 15px;
+  z-index: 1000;
+  width: 48px;
+  height: 48px;
+  padding: 0;
+  border-radius: 50%;
+  background: rgba(255,255,255,0.15);
+}
+
+.progress {
+  position: fixed;
+  top: 0;
+  left: 0;
+  height: 4px;
+  background: #ff4f91;
+  width: 0%;
+  z-index: 999;
+}
+
+/* Floating hearts */
+.heart {
+  position: fixed;
+  bottom: -40px;
+  font-size: 22px;
+  animation: floatHeart 7s linear infinite;
+  opacity: 0.7;
+  pointer-events: none;
+}
+
+@keyframes floatHeart {
+  from {
+    transform: translateY(0) rotate(0deg);
+    opacity: 0;
+  }
+  20% {
+    opacity: 0.8;
+  }
+  to {
+    transform: translateY(-110vh) rotate(360deg);
+    opacity: 0;
+  }
+}
+
+/* Quiz */
+.question {
+  font-size: 21px;
+  margin-bottom: 20px;
+}
+
+.option {
+  display: block;
+  width: 100%;
+  max-width: 500px;
+  margin: 10px auto;
+}
+
+/* Catch game */
+#gameArea {
+  position: relative;
+  width: 100%;
+  max-width: 600px;
+  height: 400px;
+  background: rgba(0,0,0,0.15);
+  border-radius: 20px;
+  overflow: hidden;
+  margin: 20px auto;
+}
+
+.catchHeart {
+  position: absolute;
+  font-size: 32px;
+  cursor: pointer;
+  user-select: none;
+}
+
+/* Memory game */
+.memoryGrid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 10px;
+  max-width: 500px;
+  margin: 20px auto;
+}
+
+.memoryCard {
+  height: 75px;
+  background: #ff397d;
+  border-radius: 12px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-size: 30px;
+  cursor: pointer;
+}
+
+.memoryCard.flipped {
+  background: rgba(255,255,255,0.15);
+}
+
+/* Final */
+.bigLove {
+  font-size: 3rem;
+  font-weight: bold;
+  margin: 25px 0;
+  animation: pulse 1.5s infinite;
+}
+
+@keyframes pulse {
+  0%,100% {
+    transform: scale(1);
+  }
+  50% {
+    transform: scale(1.08);
+  }
+}
+
+.firework {
+  position: fixed;
+  font-size: 35px;
+  animation: explode 1.5s forwards;
+  pointer-events: none;
+}
+
+@keyframes explode {
+  0% {
+    transform: scale(0);
+    opacity: 1;
+  }
+  100% {
+    transform: scale(4) translateY(-100px);
+    opacity: 0;
+  }
+}
+
+.hidden {
+  display: none;
+}
+
+#score {
+  font-size: 20px;
+  margin: 10px;
+}
+</style>
+</head>
+
+<body>
+
+<!-- ACTUAL BACKGROUND MUSIC -->
+<audio id="bgMusic" loop>
+  <source src="music.mp3" type="audio/mpeg">
+</audio>
+
+<div class="progress" id="progress"></div>
+
+<button class="music-btn" id="musicBtn" onclick="toggleMusic()">🎵</button>
+
+<!-- Floating hearts -->
+<div class="heart" style="left:5%;animation-delay:0s;">❤️</div>
+<div class="heart" style="left:20%;animation-delay:2s;">💕</div>
+<div class="heart" style="left:40%;animation-delay:4s;">💗</div>
+<div class="heart" style="left:60%;animation-delay:1s;">💖</div>
+<div class="heart" style="left:80%;animation-delay:3s;">💘</div>
+<div class="heart" style="left:92%;animation-delay:5s;">❤️</div>
+
+
+<!-- PAGE 0 -->
+<section class="page active" id="page0">
+  <div class="card">
+    <h1>Hey Shryss ❤️</h1>
+
+    <p>
+      I made something special for you...
+      but there's one rule.
+    </p>
+
+    <p>
+      You can't skip straight to the end. 😌❤️
+    </p>
+
+    <p>
+      You have to go through everything first.
+    </p>
+
+    <button onclick="startExperience()">
+      Enter My Heart ❤️
+    </button>
+  </div>
+</section>
+
+
+<!-- PAGE 1 -->
+<section class="page" id="page1">
+  <div class="card">
+    <h2>Game 1 — Let's Get Flirty 😏❤️</h2>
+
+    <div id="quizContainer"></div>
+
+    <button id="nextQuiz" class="hidden" onclick="nextQuestion()">
+      Next ❤️
+    </button>
+  </div>
+</section>
+
+
+<!-- PAGE 2 -->
+<section class="page" id="page2">
+  <div class="card">
+    <h2>Game 2 — Catch My Hearts ❤️</h2>
+
+    <p>
+      Catch 12 hearts before the timer ends! 😏
+    </p>
+
+    <div id="score">Hearts: 0 / 12</div>
+    <div id="timer">Time: 30</div>
+
+    <div id="gameArea"></div>
+
+    <button id="startCatchBtn" onclick="startCatchGame()">
+      Start Game ❤️
+    </button>
+
+    <button id="catchNext" class="hidden" onclick="goToPage(3)">
+      Continue 💕
+    </button>
+  </div>
+</section>
+
+
+<!-- PAGE 3 -->
+<section class="page" id="page3">
+  <div class="card">
+    <h2>Game 3 — Our Little Memory Game 💗</h2>
+
+    <p>Find all the matching pairs.</p>
+
+    <div class="memoryGrid" id="memoryGrid"></div>
+
+    <button id="memoryNext" class="hidden" onclick="goToPage(4)">
+      Continue ❤️
+    </button>
+  </div>
+</section>
+
+
+<!-- PAGE 4 -->
+<section class="page" id="page4">
+  <div class="card">
+    <h2>Game 4 — The Final Lock 🔐❤️</h2>
+
+    <p>
+      One final question...
+    </p>
+
+    <p>
+      What is the one word that describes
+      what I feel for you? ❤️
+    </p>
+
+    <input
+      id="finalAnswer"
+      type="text"
+      placeholder="Type your answer..."
+      style="
+        padding:14px;
+        border-radius:20px;
+        border:none;
+        width:90%;
+        max-width:400px;
+        text-align:center;
+        font-size:16px;
+      "
+    >
+
+    <br>
+
+    <button onclick="checkFinalAnswer()">
+      Unlock ❤️
+    </button>
+
+    <p id="finalError"></p>
+  </div>
+</section>
+
+
+<!-- PAGE 5 -->
+<section class="page" id="page5">
+  <div class="card">
+
+    <h1>Happy Birthday, Shryss! 🎂❤️</h1>
+
+    <p>
+      Happy Birthday to someone who means so much to me. ❤️
+    </p>
+
+    <p>
+      I hope this year brings you happiness,
+      peace, success and everything your heart wishes for.
+    </p>
+
+    <p>
+      Thank you for being you.
+      For your little actions, your smile,
+      your presence and all those tiny things
+      that somehow became so special to me.
+    </p>
+
+    <p>
+      I may not always know how to express everything,
+      but I hope you always know how important you are to me.
+    </p>
+
+    <p>
+      Today is your day...
+      so please smile a little extra. 🥹❤️
+    </p>
+
+    <button onclick="showLove()">
+      One Last Surprise ❤️
+    </button>
+
+    <div id="loveReveal" class="hidden">
+
+      <div class="bigLove">
+        I LOVE YOU, SHRYSS ❤️
+      </div>
+
+      <p>
+        More than these words can ever explain. 🥹❤️
+      </p>
+
+      <p>
+        Happy Birthday, my favourite person. 🎂💗
+      </p>
+
+    </div>
+
+  </div>
+</section>
+
+
+<script>
+
+/* =========================
+   MUSIC
+========================= */
+
+const bgMusic = document.getElementById("bgMusic");
+let musicPlaying = false;
+
+function startMusic() {
+
+  bgMusic.volume = 0.35;
+
+  bgMusic.play().then(() => {
+
+    musicPlaying = true;
+
+    document.getElementById("musicBtn").innerText = "🔊";
+
+  }).catch(() => {
+
+    console.log("Music could not start.");
+
+  });
+}
+
+
+function toggleMusic() {
+
+  if (bgMusic.paused) {
+
+    bgMusic.play();
+
+    musicPlaying = true;
+
+    document.getElementById("musicBtn").innerText = "🔊";
+
+  } else {
+
+    bgMusic.pause();
+
+    musicPlaying = false;
+
+    document.getElementById("musicBtn").innerText = "🎵";
+
+  }
+
+}
+
+
+/* =========================
+   PAGE SYSTEM
+========================= */
+
+let currentPage = 0;
+
+function goToPage(pageNumber) {
+
+  document.querySelectorAll(".page").forEach(page => {
+    page.classList.remove("active");
+  });
+
+  document.getElementById("page" + pageNumber)
+    .classList.add("active");
+
+  currentPage = pageNumber;
+
+  document.getElementById("progress").style.width =
+    (pageNumber / 5 * 100) + "%";
+
+  window.scrollTo(0,0);
+
+  if (pageNumber === 1) {
+    loadQuiz();
+  }
+
+  if (pageNumber === 3) {
+    createMemoryGame();
+  }
+}
+
+
+function startExperience() {
+
+  startMusic();
+
+  goToPage(1);
+
+}
+
+
+/* =========================
+   QUIZ
+========================= */
+
+const quiz = [
+
+  {
+    q: "Who is more likely to get jealous? 👀",
+
+    options: [
+      "Me 😭❤️",
+      "You 👀",
+      "Both of us 😂",
+      "Neither... obviously 😌"
+    ],
+
+    answer: 2
+  },
+
+  {
+    q: "If you pulled me closer during a cute moment, what would I probably do? 😏",
+
+    options: [
+      "Act completely normal 😂",
+      "Smile and get shy ❤️",
+      "Run away",
+      "Start talking about homework"
+    ],
+
+    answer: 1
+  },
+
+  {
+    q: "Who would probably make the first move on a romantic date? 👀",
+
+    options: [
+      "Me 😌",
+      "You 😏",
+      "We'd both be too shy",
+      "The waiter 😂"
+    ],
+
+    answer: 2
+  },
+
+  {
+    q: "Which of these is probably my biggest weakness when it comes to you? ❤️",
+
+    options: [
+      "Your smile",
+      "Your eyes",
+      "Your little actions",
+      "Literally all of them 😭❤️"
+    ],
+
+    answer: 3
+  },
+
+  {
+    q: "Imagine we're on a late-night date. What would I secretly want most? 🌙",
+
+    options: [
+      "A long conversation",
+      "A cute hug",
+      "To stay together a little longer",
+      "All of these 🫶"
+    ],
+
+    answer: 3
+  },
+
+  {
+    q: "If you suddenly complimented me out of nowhere, what would happen? 😳",
+
+    options: [
+      "I'd become shy",
+      "I'd pretend I wasn't affected",
+      "I'd smile like crazy",
+      "Probably all three 😭❤️"
+    ],
+
+    answer: 3
+  },
+
+  {
+    q: "Who is more likely to stare at the other person when they aren't looking? 👀",
+
+    options: [
+      "Me 😭",
+      "You 😏",
+      "Both",
+      "Nobody"
+    ],
+
+    answer: 1
+  },
+
+  {
+    q: "The most dangerous combination for me is... 😏❤️",
+
+    options: [
+      "Your smile + eye contact",
+      "Your voice + a cute message",
+      "Your hugs + staying close",
+      "All of the above"
+    ],
+
+    answer: 3
+  }
+
+];
+
+
+let quizIndex = 0;
+let quizScore = 0;
+
+
+function loadQuiz() {
+
+  quizIndex = 0;
+  quizScore = 0;
+
+  showQuestion();
+
+}
+
+
+function showQuestion() {
+
+  const container =
+    document.getElementById("quizContainer");
+
+  const nextButton =
+    document.getElementById("nextQuiz");
+
+  nextButton.classList.add("hidden");
+
+  const q = quiz[quizIndex];
+
+  container.innerHTML = `
+    <div class="question">
+      ${q.q}
+    </div>
+
+    ${q.options.map((option,index) => `
+      <button
+        class="option"
+        onclick="answerQuiz(${index})">
+        ${option}
+      </button>
+    `).join("")}
+  `;
+
+}
+
+
+function answerQuiz(index) {
+
+  const q = quiz[quizIndex];
+
+  const buttons =
+    document.querySelectorAll(".option");
+
+  buttons.forEach(button => {
+    button.disabled = true;
+  });
+
+  if (index === q.answer) {
+
+    quizScore++;
+
+    buttons[index].innerText += " ❤️";
+
+  } else {
+
+    buttons[index].innerText += " 😭";
+
+    buttons[q.answer].innerText += " ❤️";
+
+  }
+
+  document
+    .getElementById("nextQuiz")
+    .classList.remove("hidden");
+
+}
+
+
+function nextQuestion() {
+
+  quizIndex++;
+
+  if (quizIndex < quiz.length) {
+
+    showQuestion();
+
+  } else {
+
+    goToPage(2);
+
+  }
+
+}
+
+
+/* =========================
+   CATCH HEART GAME
+========================= */
+
+let caught = 0;
+let catchTimer;
+let timeLeft = 30;
+
+
+function startCatchGame() {
+
+  caught = 0;
+  timeLeft = 30;
+
+  document.getElementById("score").innerText =
+    "Hearts: 0 / 12";
+
+  document.getElementById("timer").innerText =
+    "Time: 30";
+
+  document.getElementById("startCatchBtn")
+    .classList.add("hidden");
+
+  document.getElementById("catchNext")
+    .classList.add("hidden");
+
+  const area =
+    document.getElementById("gameArea");
+
+  area.innerHTML = "";
+
+  spawnHeart();
+
+  catchTimer = setInterval(() => {
+
+    timeLeft--;
+
+    document.getElementById("timer").innerText =
+      "Time: " + timeLeft;
+
+    if (timeLeft <= 0) {
+
+      clearInterval(catchTimer);
+
+      if (caught < 12) {
+
+        alert(
+          "Aww 😭 You ran out of time! Try again ❤️"
+        );
+
+        document.getElementById("startCatchBtn")
+          .classList.remove("hidden");
+
+      }
+
+    }
+
+  },1000);
+
+}
+
+
+function spawnHeart() {
+
+  if (caught >= 12) {
+
+    clearInterval(catchTimer);
+
+    document.getElementById("catchNext")
+      .classList.remove("hidden");
+
+    return;
+
+  }
+
+  const area =
+    document.getElementById("gameArea");
+
+  const heart =
+    document.createElement("div");
+
+  heart.className = "catchHeart";
+  heart.innerText = "❤️";
+
+  heart.style.left =
+    Math.random() * 85 + "%";
+
+  heart.style.top =
+    Math.random() * 80 + "%";
+
+  heart.onclick = function() {
+
+    caught++;
+
+    document.getElementById("score").innerText =
+      "Hearts: " + caught + " / 12";
+
+    heart.remove();
+
+    spawnHeart();
+
+  };
+
+  area.appendChild(heart);
+
+}
+
+
+/* =========================
+   MEMORY GAME
+========================= */
+
+const memorySymbols = [
+  "❤️","❤️",
+  "💗","💗",
+  "💕","💕",
+  "💖","💖",
+  "💘","💘",
+  "🥰","🥰",
+  "😘","😘",
+  "🫶","🫶"
+];
+
+let firstCard = null;
+let secondCard = null;
+let lockBoard = false;
+let matchedPairs = 0;
+
+
+function createMemoryGame() {
+
+  const grid =
+    document.getElementById("memoryGrid");
+
+  grid.innerHTML = "";
+
+  firstCard = null;
+  secondCard = null;
+  lockBoard = false;
+  matchedPairs = 0;
+
+  document.getElementById("memoryNext")
+    .classList.add("hidden");
+
+  const shuffled =
+    [...memorySymbols].sort(() => Math.random() - 0.5);
+
+  shuffled.forEach(symbol => {
+
+    const card =
+      document.createElement("div");
+
+    card.className = "memoryCard";
+    card.dataset.symbol = symbol;
+    card.innerText = "❓";
+
+    card.onclick = () =>
+      flipCard(card);
+
+    grid.appendChild(card);
+
+  });
+
+}
+
+
+function flipCard(card) {
+
+  if (
+    lockBoard ||
+    card === firstCard ||
+    card.classList.contains("flipped")
+  ) {
+    return;
+  }
+
+  card.classList.add("flipped");
+
+  card.innerText =
+    card.dataset.symbol;
+
+  if (!firstCard) {
+
+    firstCard = card;
+    return;
+
+  }
+
+  secondCard = card;
+
+  checkMatch();
+
+}
+
+
+function checkMatch() {
+
+  const match =
+    firstCard.dataset.symbol ===
+    secondCard.dataset.symbol;
+
+  if (match) {
+
+    matchedPairs++;
+
+    firstCard = null;
+    secondCard = null;
+
+    if (matchedPairs === 8) {
+
+      setTimeout(() => {
+
+        document.getElementById("memoryNext")
+          .classList.remove("hidden");
+
+      },500);
+
+    }
+
+  } else {
+
+    lockBoard = true;
+
+    setTimeout(() => {
+
+      firstCard.classList.remove("flipped");
+      secondCard.classList.remove("flipped");
+
+      firstCard.innerText = "❓";
+      secondCard.innerText = "❓";
+
+      firstCard = null;
+      secondCard = null;
+
+      lockBoard = false;
+
+    },800);
+
+  }
+
+}
+
+
+/* =========================
+   FINAL LOCK
+========================= */
+
+function checkFinalAnswer() {
+
+  const answer =
+    document.getElementById("finalAnswer")
+      .value
+      .trim()
+      .toLowerCase();
+
+  if (answer.includes("love")) {
+
+    document.getElementById("finalError")
+      .innerText =
+      "Unlocked... ❤️";
+
+    setTimeout(() => {
+
+      goToPage(5);
+
+    },800);
+
+  } else {
+
+    document.getElementById("finalError")
+      .innerText =
+      "Hmm... think about what I feel for you. 👀❤️";
+
+  }
+
+}
+
+
+/* =========================
+   FINAL SURPRISE
+========================= */
+
+function showLove() {
+
+  document.getElementById("loveReveal")
+    .classList.remove("hidden");
+
+  createFireworks();
+
+}
+
+
+function createFireworks() {
+
+  const emojis = [
+    "❤️",
+    "💖",
+    "💗",
+    "💕",
+    "✨",
+    "💘",
+    "🎉"
+  ];
+
+  for (let i = 0; i < 45; i++) {
+
+    setTimeout(() => {
+
+      const firework =
+        document.createElement("div");
+
+      firework.className = "firework";
+
+      firework.innerText =
+        emojis[
+          Math.floor(
+            Math.random() * emojis.length
+          )
+        ];
+
+      firework.style.left =
+        Math.random() * 100 + "vw";
+
+      firework.style.top =
+        Math.random() * 80 + "vh";
+
+      document.body.appendChild(firework);
+
+      setTimeout(() => {
+        firework.remove();
+      },1500);
+
+    }, i * 70);
+
+  }
+
+}
+
+</script>
+
+</body>
+</html>
